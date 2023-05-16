@@ -30,3 +30,33 @@ jobs:
     needs: integration
     steps:
       - run: echo "This is a deploy step"
+
+
+  terraform_lint:
+    runs-on: ubuntu-20.04
+    needs: integration
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - uses: terraform-linters/setup-tflint@v3
+        name: Setup TFLint
+        with:
+          tflint_version: v0.44.1
+      
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+          GITHUB_TOKEN: ${{ github.token }}
+      
+      - name: Run TFLint
+        run: tflint -f json aws > tflint-output.json
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TFLint
+          path: tflint-output.json
+        if: always()                        # what is this for?
+      
