@@ -1,7 +1,7 @@
 jobs:
   
   validate:
-    macnhine: true 
+    machine: true 
     steps:
       - checkout
       
