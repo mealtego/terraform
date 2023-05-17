@@ -1,4 +1,21 @@
 jobs:
+  
+  validate:
+    macnhine: true 
+    steps:
+      - checkout
+      
+      - run:
+          command: |
+            docker pull bridgecrew/checkov
+            docker run --rm -w /src -v $(pwd):/src bridgecrew/checkov -d aws -o json | tee checkov-output.json
+          
+      - store_artifacts:
+          path: checkov-output.json
+          destination: checkov-output
+          when: always 
+
+
   build:
     machine: true
     steps:
@@ -30,7 +47,10 @@ workflows:
   version: 2
   terraform:
     jobs:
-      - build
+      - validate
+      - build:
+          requires:
+            - validate
       - test:
           requires:
             - build 
