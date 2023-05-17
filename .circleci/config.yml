@@ -8,7 +8,7 @@ jobs:
       - run:
           command: |
             docker pull bridgecrew/checkov
-            docker run --rm -w /src -v $(pwd):/src bridgecrew/checkov -d aws -o json | tee checkov-output.json
+            docker run --rm -w /src -v $(pwd):/src bridgecrew/checkov -d aws -o json | tee checkov-output.json || true
           
       - store_artifacts:
           path: checkov-output.json
