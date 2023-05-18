@@ -21,12 +21,13 @@ jobs:
         policy_type: 'aws'
         only_warn: true
         sarif_upload: true
+        iac_dir: 'gcp'
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: terrascan.sarif
 
-
+        
   build:
     runs-on: ubuntu-20.04                    # similar to "image" in GitLab
     steps:
