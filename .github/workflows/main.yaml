@@ -21,8 +21,6 @@ jobs:
         policy_type: 'gcp'
         only_warn: true
         iac_dir: 'gcp'
-
-
         
   build:
     runs-on: ubuntu-20.04                    # similar to "image" in GitLab
