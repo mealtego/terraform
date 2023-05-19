@@ -8,7 +8,7 @@ jobs:
       - run:
           command: |
             docker pull accurics/terrascan
-            docker run --rm -w /src -v $(pwd):/src accurics/terrascan -d gcp -o json | tee terrascan-output.json || true
+            docker run --rm -w /src -v $(pwd):/src accurics/terrascan scan -d gcp -o json | tee terrascan-output.json || true
           
       - store_artifacts:
           path: terrascan-output.json
