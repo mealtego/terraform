@@ -1,21 +1,4 @@
 jobs:
-  
-  validate:
-    machine: true 
-    steps:
-      - checkout
-      
-      - run:
-          command: |
-            docker pull accurics/terrascan
-            docker run --rm -w /src -v $(pwd):/src accurics/terrascan scan -d gcp -o json | tee terrascan-output.json || true
-          
-      - store_artifacts:
-          path: terrascan-output.json
-          destination: terrascan-output
-          when: always 
-
-
   build:
     machine: true
     steps:
@@ -35,7 +18,7 @@ jobs:
       - run:
           command: |
             echo "This is an integration step"
-          when: on_fail
+            exit 1
 
   prod:
     machine: true
@@ -47,10 +30,7 @@ workflows:
   version: 2
   terraform:
     jobs:
-      - validate
-      - build:
-          requires:
-            - validate
+      - build
       - test:
           requires:
             - build 
