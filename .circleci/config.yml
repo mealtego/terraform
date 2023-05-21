@@ -43,6 +43,7 @@ workflows:
   version: 2
   terraform:
     jobs:
+      - tfsec
       - build
       - test:
           requires:
