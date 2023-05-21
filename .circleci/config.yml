@@ -1,4 +1,16 @@
 jobs:
+
+  tfsec:
+    machine: true
+    steps:
+      - checkout
+      - run: docker run --rm -v $(pwd):/src aquasec/tfsec /src -f json | tee tfsec-output.json || true
+      
+      - store_artifacts:
+          path: tfsec-output.json
+          destination: tfsec-output
+          when: always
+
   build:
     machine: true
     steps:
